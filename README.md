@@ -10,7 +10,10 @@
     <canvas id="canvas"></canvas>
 
     .js
-    canvas = new Summer({
+
+    import Summer from 'summer-canvas'
+
+    const canvas = new Summer({
         ratio: 1,
         canvasId: 'canvas',
         canvasWidth: 343,
@@ -31,3 +34,12 @@
             }
         ]
     })
+
+    canvas.draw((img: string, size: { width: string, height: string }) => {
+
+    })
+
+### method
+
+1. new Summer(summerOptions)
+2. canvas.draw(doneCallback)
