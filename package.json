@@ -1,6 +1,6 @@
 {
   "name": "summer-canvas",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "tsc"
@@ -10,6 +10,12 @@
   "files": [
     "build"
   ],
+  "author": "bonon",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bononwj/summer-canvas"
+  },
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
