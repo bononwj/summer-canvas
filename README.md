@@ -1,21 +1,33 @@
 # summer
 
-## Project setup
-```
-yarn install
-```
+### install
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+`yarn add summer-canvas`
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+### example
 
-### Lints and fixes files
-```
-yarn run lint
-```
+    .html
+    <canvas id="canvas"></canvas>
+
+    .js
+    canvas = new Summer({
+        ratio: 1,
+        canvasId: 'canvas',
+        canvasWidth: 343,
+        canvasHeight: 'auto',
+        radius: 30,
+        tasks: [
+            {
+                type: 'rect',
+                id: 'top_cicle_border',
+                radius: 80,
+                x: 90,
+                y: 0,
+                width: 162,
+                height: 162,
+                background: {
+                    color: 'linear(to s, 0 #fff7be, 100% #f9b71c)'
+                }
+            }
+        ]
+    })
