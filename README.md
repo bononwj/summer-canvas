@@ -41,7 +41,7 @@
 
 ### method
 
-1. new Summer(<a href="summerOptions">summerOptions</a>)
+1. new Summer(<a href="#summerOptions">summerOptions</a>)
 2. canvas.draw(doneCallback)
 
 ### options
@@ -53,8 +53,8 @@ option | type | description
 canvasId | string | canvas element id
 canvasWidth | number |
 canvasHeight | number \| 'auto'
-tasks | (<a href="summerOptions">ImgInterface</a> \| <a href="summerOptions">RectInterface</a> \| <a href="summerOptions">TextInterface</a> \| <a href="summerOptions">WrapInterface</a>)[]
+tasks | (<a href="#ImgInterface">ImgInterface</a> \| <a href="#RectInterface">RectInterface</a> \| <a href="#TextInterface">TextInterface</a> \| <a href="#WrapInterface">WrapInterface</a>)[]
 ratio? | number | set in a variety of sizes
-border? | <a href="summerOptions">BorderInterface</a>
-background? | <a href="summerOptions">BackgroundInterface</a>
+border? | <a href="#BorderInterface">BorderInterface</a>
+background? | <a href="#BackgroundInterface">BackgroundInterface</a>
 radius? | number
