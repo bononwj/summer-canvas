@@ -36,4 +36,3 @@ export default class SummerText {
     getTextUnitWidth(text: string, fontWeight?: number | string): number;
 }
 export {};
-//# sourceMappingURL=summerText.d.ts.map

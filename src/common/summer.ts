@@ -138,7 +138,7 @@ export default class Summer {
     background: BackgroundInterface | undefined
 
     constructor(options: SummerInterface) {
-        this.canvas = document.getElementById("canvas") as HTMLCanvasElement
+        this.canvas = document.getElementById(options.canvasId) as HTMLCanvasElement
         this.ctx = this.canvas.getContext("2d")
         this.ratio = options.ratio || 1
         this.canvasWidth = options.canvasWidth

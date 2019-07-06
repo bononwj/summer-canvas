@@ -1,7 +1,7 @@
 <template>
 	<div class="hello">
 		<div class="text" @click="handleStartDraw">{{text}}</div>
-		<canvas id="canvas"></canvas>
+		<canvas id="canvas_m"></canvas>
 		<img v-if="img" :src="img" alt="" class="img">
 		<!-- <img src="../assets/1.png" alt="" class="img"> -->
 	</div>
@@ -31,10 +31,10 @@ export default class HelloWorld extends Vue {
 
 		let canvas = new Summer({
 			ratio: 3,
-			canvasId: 'canvas',
+			canvasId: 'canvas_m',
 			canvasWidth: 343,
-			canvasHeight: 'auto',
-			// canvasHeight: 343,
+			// canvasHeight: 'auto',
+			canvasHeight: 343,
 			radius: 30,
 			// canvasHeight: 200,
 			// backgroundColor: 'red',

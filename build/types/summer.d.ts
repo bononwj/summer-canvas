@@ -57,7 +57,7 @@ interface ImgInfoInterface {
 }
 interface ImgInterface extends RectPathInterface {
     type: 'img';
-    height: number;
+    height?: number;
     img: ImgInfoInterface | string;
     mode?: 'contain' | 'cover' | 'fill';
     backgroundColor?: string;
@@ -117,6 +117,7 @@ interface TaskInfoInterface extends ItemBaseInterface {
     setWrapHeight: Function;
 }
 export default class Summer {
+    isInit: boolean;
     ratio: number;
     canvas: HTMLCanvasElement;
     canvasWidth: number;
@@ -143,4 +144,3 @@ export default class Summer {
     getImgInfo(imgUrl: string): Promise<ImgInfoInterface>;
 }
 export {};
-//# sourceMappingURL=summer.d.ts.map

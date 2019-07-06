@@ -1,11 +1,11 @@
 {
   "name": "summer-canvas",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "tsc"
+    "build": "rm -rf /s/q ./build && tsc"
   },
-  "main": "./build/common/summer.js",
+  "main": "./build/summer.js",
   "types": "./build/types/index.d.ts",
   "files": [
     "build"

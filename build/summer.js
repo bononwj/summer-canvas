@@ -36,8 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import SummerText from './summerText';
 var Summer = /** @class */ (function () {
     function Summer(options) {
+        this.isInit = true;
         this.canvasHeight = 'auto';
-        this.canvas = document.getElementById("canvas");
+        this.canvas = document.getElementById(options.canvasId);
         this.ctx = this.canvas.getContext("2d");
         this.ratio = options.ratio || 1;
         this.canvasWidth = options.canvasWidth;
@@ -62,7 +63,8 @@ var Summer = /** @class */ (function () {
         })
             .then(function (pos) {
             // console.log(pos, this.canvasHeight, this.tasks)
-            if (_this.canvasHeight == 'auto') {
+            if (_this.isInit) {
+                _this.isInit = false;
                 _this.canvasHeight = pos.bot;
                 _this.canvas.height = _this.canvasHeight * _this.ratio;
                 _this.canvas.style.width = _this.canvasWidth + 'px';
@@ -95,6 +97,7 @@ var Summer = /** @class */ (function () {
                     waitQueue: [],
                     runQueue: [],
                     setWrapHeight: function (pos) {
+                        // console.log(pos.bot, info.height, info.id)
                         if (!info.height || info.height == 'auto') {
                             info.height = pos.bot - (info.y || 0);
                         }
@@ -112,7 +115,13 @@ var Summer = /** @class */ (function () {
                     }
                 };
                 taskInfo.tasks = info.tasks;
+                var hasLast = []; // 判断last是否是唯一的
                 taskInfo.tasks.forEach(function (task) {
+                    if (task.last) {
+                        hasLast.push({
+                            id: task.id
+                        });
+                    }
                     if (task.dependOn) {
                         var hasDepended_1 = false;
                         taskInfo.tasks.forEach(function (_task) {
@@ -131,6 +140,9 @@ var Summer = /** @class */ (function () {
                         taskInfo.runQueue.push(task);
                     }
                 });
+                if (hasLast.length > 1 || (hasLast.length && hasLast[0].id != taskInfo.tasks[taskInfo.tasks.length - 1].id)) {
+                    throw "task\uFF1A" + taskInfo.id + "\ntask \u961F\u5217\u4E2D\u53EA\u80FD\u662F\u6700\u540E\u4E00\u4E2A task \u6709 last \u5C5E\u6027";
+                }
                 if (taskInfo.runQueue.length) {
                     _this.runTask(taskInfo, taskInfo.runQueue[taskInfo.runLength]);
                 }
@@ -208,8 +220,10 @@ var Summer = /** @class */ (function () {
     Summer.prototype.runTask = function (taskInfo, currentTask) {
         var _this = this;
         var _task = Object.assign(currentTask, {
-            isGetHeight: (taskInfo.height == 'auto' || taskInfo.height == undefined)
+            isGetHeight: this.isInit
+            // isGetHeight: (taskInfo.height == 'auto' || taskInfo.height == undefined)
         });
+        // console.log(_task.isGetHeight, !_task.dependOn, _task.id, taskInfo.id)
         if (_task.isGetHeight && !_task.dependOn) {
             _task = Object.assign(_task, {
                 x: (taskInfo.x || 0) + (currentTask.x || 0),
