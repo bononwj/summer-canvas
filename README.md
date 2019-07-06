@@ -59,7 +59,7 @@ border? | <a href="#BorderOptions">BorderOptions</a>
 background? | <a href="#BackgroundOptions">BackgroundOptions</a>
 radius? | number
 
-#### <a name="ImgOptions">ImgOptions</a> extends <a name="TaskBaseOptions">TaskBaseOptions</a>
+#### <a name="ImgOptions">ImgOptions</a> extends <a href="#TaskBaseOptions">TaskBaseOptions</a>
 
 option | type | description
 -| - | - |
@@ -73,7 +73,7 @@ shadow? | <a href="#BoxShadowOptions">BoxShadowOptions</a> |
 border? | <a href="#BorderOptions">BorderOptions</a> |
 
 
-#### <a name="RectOptions">RectOptions</a> extends <a name="TaskBaseOptions">TaskBaseOptions</a>
+#### <a name="RectOptions">RectOptions</a> extends <a href="#TaskBaseOptions">TaskBaseOptions</a>
 
 option | type | description
 -| - | - |
@@ -82,7 +82,7 @@ border? | <a href="#BorderOptions">BorderOptions</a>
 background? | <a href="#BackgroundOptions">BackgroundOptions</a>
 shadow? | <a href="#BoxShadowOptions">BoxShadowOptions</a>
 
-#### <a name="TextOptions">TextOptions</a> extends <a name="TaskBaseOptions">TaskBaseOptions</a>
+#### <a name="TextOptions">TextOptions</a> extends <a href="#TaskBaseOptions">TaskBaseOptions</a>
 
 option | type | description
 -| - | - |
@@ -101,7 +101,7 @@ padding? | <a href="#PaddingOptions">PaddingOptions</a>
 fontWeight? | 'normal' \| 'lighter' \| 'bold' \| number
 textAlign? | 'left' \| 'center' \| 'right' \| 'start' \| 'end'
 
-#### <a name="WrapOptions">WrapOptions</a> extends <a name="TaskBaseOptions">TaskBaseOptions</a>
+#### <a name="WrapOptions">WrapOptions</a> extends <a href="#TaskBaseOptions">TaskBaseOptions</a>
 
 option | type | description
 -| - | - |
@@ -123,7 +123,7 @@ y? | number
 id | string
 isGetHeight? | boolean
 dependOn? | <a href="#DependOnOptions">DependOnOptions</a>
-last? | <a href="#LastItemOptions">LastItemOptions</a>
+last? | <a href="#LastTaskOptions">LastTaskOptions</a>
 
 #### <a name="BackgroundOptions">BackgroundOptions</a>
 
@@ -141,7 +141,7 @@ id | string
 direction | 'cross' \| 'vertical'
 margin | number
 
-#### <a name="LastItemOptions">LastItemOptions</a>
+#### <a name="LastTaskOptions">LastTaskOptions</a>
 
 option | type | description
 -| - | - |
