@@ -119,6 +119,7 @@ tasks | (<a href="#ImgOptions">ImgOptions</a> \| <a href="#RectOptions">RectOpti
 option | type | description
 -| - | - |
 id | string
+hidden? | boolean
 x? | number
 y? | number
 dependOn? | <a href="#DependOnOptions">DependOnOptions</a>
