@@ -8,12 +8,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import Summer from "../common/summer";
 
 @Component
 export default class HelloWorld extends Vue {
-	@Prop() private msg!: string;
 	
 	text: string = '开始'
 	img: string = ''
@@ -27,7 +26,7 @@ export default class HelloWorld extends Vue {
 // MTg1ODMyNjkxMDcxNTYyMjMxMTA3MDg1
 // MTg1ODMyNjkxMDcxNTYyMjMxMTA4MDY1
 		// let text = `sadfasfsadfasfsadfasfsadfasf asdfjkasda\n sadfasfsadfasfsadfasfsadfasfsadfasf\nadsfasdfasdfasd`
-		let text = `一二三四五六七八九`
+		// let text = `一二三四五六七八九`
 		// let text = `一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十`
 
 		let canvas = new Summer({
@@ -35,7 +34,7 @@ export default class HelloWorld extends Vue {
 			canvasId: 'canvas',
 			canvasWidth: 343,
 			canvasHeight: 'auto',
-			// canvasHeight: 300,
+			// canvasHeight: 343,
 			radius: 30,
 			// canvasHeight: 200,
 			// backgroundColor: 'red',
@@ -68,13 +67,14 @@ export default class HelloWorld extends Vue {
 					type: 'wrap',
 					id: 'main_wrap_border',
 					width: 343,
+					// height: 120,
+					height: 'auto',
 					x: 0,
 					y: 54,
 					radius: 20,
 					last: {
 						margin: 2
 					},
-					height: 'auto',
 					background: {
 						color: 'linear(to s, 0 #fff7be, 100% #f9b71c)'
 					},
@@ -83,13 +83,14 @@ export default class HelloWorld extends Vue {
 							type: 'wrap',
 							id: 'main_wrap',
 							width: 339,
+							// height: 320,
+							height: 'auto',
 							x: 2,
 							y: 2,
 							radius: 18,
 							last: {
 								margin: 2
 							},
-							height: 'auto',
 							background: {
 								mode: 'cover',
 								image: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMDk3NDgx'

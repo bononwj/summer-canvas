@@ -63,7 +63,7 @@ interface ImgInfoInterface {
 }
 interface ImgInterface extends RectPathInterface {
     type: 'img'
-    height: number
+    height?: number
     img: ImgInfoInterface | string
     mode?: 'contain' | 'cover' | 'fill'
     backgroundColor?: string
@@ -126,6 +126,7 @@ interface TaskInfoInterface extends ItemBaseInterface {
 
 export default class Summer {
 
+    isInit: boolean = true
     ratio: number
     canvas: HTMLCanvasElement
     canvasWidth: number
@@ -162,7 +163,8 @@ export default class Summer {
         })
         .then((pos: PosInterface) => {
             // console.log(pos, this.canvasHeight, this.tasks)
-            if (this.canvasHeight == 'auto') {
+            if (this.isInit) {
+                this.isInit = false
                 this.canvasHeight = pos.bot
                 this.canvas.height = this.canvasHeight * this.ratio
                 this.canvas.style.width = this.canvasWidth + 'px'
@@ -194,6 +196,7 @@ export default class Summer {
                     waitQueue: [],
                     runQueue: [],
                     setWrapHeight(pos: PosInterface) {
+                        // console.log(pos.bot, info.height, info.id)
                         if (!info.height || info.height == 'auto') {
                             info.height = pos.bot - (info.y || 0)
                         }
@@ -211,7 +214,13 @@ export default class Summer {
                     }
                 }
                 taskInfo.tasks = info.tasks
+                let hasLast = [] // 判断last是否是唯一的
                 taskInfo.tasks.forEach((task:(ImgInterface | RectInterface | TextInterface | WrapInterface)) => {
+                    if (task.last) {
+                        hasLast.push({
+                            id: task.id
+                        })
+                    }
                     if (task.dependOn) {
                         let hasDepended = false
                         taskInfo.tasks.forEach((_task:(ImgInterface | RectInterface | TextInterface | WrapInterface)) => {
@@ -228,6 +237,9 @@ export default class Summer {
                         taskInfo.runQueue.push(task)
                     }
                 })
+                if (hasLast.length > 1 || (hasLast.length && hasLast[0].id != taskInfo.tasks[taskInfo.tasks.length-1].id)) {
+                    throw `task：${taskInfo.id}\ntask 队列中只能是最后一个 task 有 last 属性`;
+                }
                 if (taskInfo.runQueue.length) {
                     this.runTask(taskInfo, taskInfo.runQueue[taskInfo.runLength])
                 } else {
@@ -304,9 +316,11 @@ export default class Summer {
 
         let _task = Object.assign(currentTask,
             {
-                isGetHeight: (taskInfo.height == 'auto' || taskInfo.height == undefined)
+                isGetHeight: this.isInit
+                // isGetHeight: (taskInfo.height == 'auto' || taskInfo.height == undefined)
             })
         
+        // console.log(_task.isGetHeight, !_task.dependOn, _task.id, taskInfo.id)
         if (_task.isGetHeight && !_task.dependOn) {
             _task = Object.assign(_task,
                 {

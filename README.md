@@ -65,7 +65,7 @@ option | type | description
 -| - | - |
 type | 'img' |
 width | number |
-height | number |
+height? | number |
 img | <a href="#ImgInfoOptions">ImgInfoOptions</a> \| string |
 mode? | 'contain' \| 'cover' \| 'fill' |
 backgroundColor? | string |

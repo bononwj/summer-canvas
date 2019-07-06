@@ -5,10 +5,11 @@
     "sourceMap": true,// 是否生成sourceMap（用于浏览器调试）
     "noImplicitAny": false,
     "noUnusedLocals": true,
+    "experimentalDecorators": true,
     "noUnusedParameters": true,
     "declaration": true,// 是否生成声明文件
     "declarationDir": "./build/types/",// 声明文件打包的位置
-    "declarationMap": true,// 是否生成声明文件map文件（便于调试）
+    // "declarationMap": true,// 是否生成声明文件map文件（便于调试）
     "moduleResolution": "node",
     "module": "esnext",
     "target": "es5",// 转化成的目标语言
@@ -27,7 +28,7 @@
     "allowJs": false
   },
   "include": [
-    "src/**/*.ts"
+    "src/common/*.ts"
   ],// 要打包的文件
   "exclude": [
     "node_modules",
