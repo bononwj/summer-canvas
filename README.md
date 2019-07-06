@@ -121,9 +121,10 @@ option | type | description
 x? | number
 y? | number
 id | string
-isGetHeight? | boolean
 dependOn? | <a href="#DependOnOptions">DependOnOptions</a>
 last? | <a href="#LastTaskOptions">LastTaskOptions</a>
+
+<!-- isGetHeight? | boolean -->
 
 #### <a name="BackgroundOptions">BackgroundOptions</a>
 
