@@ -20,16 +20,231 @@ export default class HelloWorld extends Vue {
 	handleStartDraw() {
 	}
 	mounted() {
-// MTg1ODMyNjkxMDcxNTYyMjkyOTk5MDA2
-// MTg1ODMyNjkxMDcxNTYyMjMxMDk3NDgx
-// MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5
-// MTg1ODMyNjkxMDcxNTYyMjMxMTA3MDg1
-// MTg1ODMyNjkxMDcxNTYyMjMxMTA4MDY1
+		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjkyOTk5MDA2
+		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5
+		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA3MDg1
+		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA4MDY1
 		// let text = `sadfasfsadfasfsadfasfsadfasf asdfjkasda\n sadfasfsadfasfsadfasfsadfasfsadfasf\nadsfasdfasdfasd`
 		// let text = `一二三四五六七八九`
 		// let text = `一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十`
 
-		let canvas = new Summer({
+		let canvas = new Summer(this.getHomeShare())
+		this.text = '加载中'
+		canvas.draw((img: string, size: { width: string, height: string }) => {
+			this.img = img
+			this.text = '加载完成'
+			// console.log('saa: ', size)
+		})
+	}
+
+	getHomeShare():any {
+		return {
+			ratio: 2,
+			canvasId: 'canvas_m',
+			canvasWidth: 317,
+			canvasHeight: 'auto',
+			// canvasHeight: 317,
+			background: {
+				color: '#363F66'
+			},
+			tasks: [
+				{
+					type: 'img',
+					id: 'banner_img',
+					img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
+					x: 0,
+					y: 0,
+					// hidden: true,
+					width: 317,
+				},
+				{
+					type: 'wrap',
+					id: 'main_wrap',
+					x: 0,
+					y: 0,
+					hidden: true,
+					width: 317,
+					dependOn: {
+						id: 'banner_img',
+						direction: 'vertical',
+						margin: 0
+					},
+					last: {
+						margin: 0
+					},
+					background: {
+						color: 'linear(to s, 0 #363F66, 100% #161627)'
+					},
+					tasks: [
+						{
+							type: 'text',
+							id: 'theme_text',
+							text: '一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
+							x: 20,
+							y: 16,
+							width: 277,
+							fontSize: 16,
+							lineHeight: 24,
+							maxLine: 2,
+							fontWeight: 'bold',
+							color: '#ffffff',
+							textAlign: 'left',
+						},
+						{
+							type: 'text',
+							id: 'subtitle_text',
+							text: 'ss一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
+							x: 20,
+							y: 16,
+							hidden: true,
+							width: 277,
+							fontSize: 12,
+							lineHeight: 18,
+							maxLine: 2,
+							fontWeight: 'bold',
+							color: '#B6BCE2',
+							textAlign: 'left',
+							dependOn: {
+								id: 'theme_text',
+								direction: 'vertical',
+								margin: 8
+							},
+						},
+						{
+							type: 'img',
+							id: 'time_img',
+							img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
+							x: 20,
+							y: 0,
+							hidden: true,
+							dependOn: {
+								id: 'time_text',
+								direction: 'vertical',
+								margin: -15
+							},
+							width: 10,
+							height: 10
+						},
+						{
+							type: 'img',
+							id: 'place_img',
+							img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5',
+							x: 20,
+							y: 0,
+							dependOn: {
+								id: 'place_text',
+								direction: 'vertical',
+								margin: -15
+							},
+							width: 10,
+							height: 10
+						},
+						{
+							type: 'text',
+							id: 'time_text',
+							text: 'asdfasasdfasdf asdfsf',
+							x: 40,
+							hidden: true,
+							width: 257,
+							fontSize: 12,
+							lineHeight: 18,
+							maxLine: 1,
+							dependOn: {
+								id: 'subtitle_text',
+								direction: 'vertical',
+								margin: 16
+							},
+							color: 'rgb(128,136,180)',
+							textAlign: 'left',
+						},
+						{
+							type: 'text',
+							id: 'place_text',
+							text: '哈哈哈 asdfsfasdfasasdfasdf asdfsfasdfasasdfasdf asdfsfasdfasasdfasdf asdfsf',
+							x: 40,
+							width: 257,
+							fontSize: 12,
+							lineHeight: 18,
+							maxLine: 1,
+							dependOn: {
+								id: 'time_text',
+								direction: 'vertical',
+								margin: 4
+							},
+							color: 'rgb(128,136,180)',
+							textAlign: 'left',
+						},
+						{
+							type: 'rect',
+							id: 'mid_line_rect',
+							x: 20,
+							width: 277,
+							height: 1,
+							dependOn: {
+								id: 'place_text',
+								direction: 'vertical',
+								margin: 18
+							},
+							background: {
+								color: 'rgba(255,255,255,0.13)'
+							}
+						},
+						{
+							type: 'wrap',
+							id: 'qrcode_wrap',
+							x: 95,
+							width: 128,
+							height: 128,
+							dependOn: {
+								id: 'mid_line_rect',
+								direction: 'vertical',
+								margin: 18
+							},
+							background: {
+								color: 'linear(to s, 0 #00DFFF, 50% #BC2EF9, 100% #FB2A6C)'
+							},
+							tasks: [
+								{
+									type: 'img',
+									id: 'qrcode_img',
+									img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
+									x: 4,
+									y: 4,
+									last: {
+										margin: 0
+									},
+									width: 120,
+									height: 120
+								},
+							]
+						},
+						{
+							type: 'text',
+							id: 'tips_text',
+							text: '「长按识别二维码，观看现场图片直播」',
+							x: 317 / 2,
+							fontSize: 10,
+							lineHeight: 14,
+							maxLine: 1,
+							dependOn: {
+								id: 'qrcode_wrap',
+								direction: 'vertical',
+								margin: 8
+							},
+							last: {
+								margin: 22
+							},
+							color: 'rgb(255,255,255)',
+							textAlign: 'center',
+						},
+					]
+				},
+			]
+		}
+	}
+
+	getStarShare() {
+		return {
 			ratio: 3,
 			canvasId: 'canvas_m',
 			canvasWidth: 343,
@@ -238,13 +453,7 @@ export default class HelloWorld extends Vue {
 					]
 				},
 			]
-		})
-		this.text = '加载中'
-		canvas.draw((img: string, size: { width: string, height: string }) => {
-			this.img = img
-			this.text = '加载完成'
-			// console.log('saa: ', size)
-		})
+		}
 	}
 }
 </script>

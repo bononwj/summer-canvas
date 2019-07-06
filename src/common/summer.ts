@@ -24,6 +24,7 @@ interface ItemBaseInterface {
     x?: number
     y?: number
     id: string
+    hidden?: boolean
     isGetHeight?: boolean
     dependOn?: DependOnInterface
     last?: LastItemInterface
@@ -184,6 +185,11 @@ export default class Summer {
         // console.log(info.id, info.isGetHeight, info.height)
         const self = this
         return new Promise((resolve) => {
+            if (info.hidden) {
+                return resolve({
+                    bot: info.y
+                })
+            }
             let taskHandler = () => {
                 let taskInfo:TaskInfoInterface = {
                     id: info.id,
@@ -205,7 +211,7 @@ export default class Summer {
                         })
                     },
                     done() {
-                        this.runWaitLength ++
+                        // console.log("---", info.id, this.runWaitLength, this.waitQueue.length, this.waitQueue)
                         if (this.runWaitLength >= this.waitQueue.length) {
                             resolve({
                                 bot: (info.y || 0) + ((info.height != 'auto' ? info.height : 0) || 0)
@@ -275,21 +281,22 @@ export default class Summer {
                     background: info.background
                 })
                 .then(() => {
-                    if (info.id == 'canvas') {
-                        // console.log(1, info.id)
-                    }
                     taskHandler()
                 })
             } else {
                 taskHandler()
-                if (info.id == 'canvas') {
-                    // console.log(2, info.id)
-                }
             }
         })
     }
 
     checkWaitQueue(taskInfo:TaskInfoInterface, prevTask: (ImgInterface | RectInterface | TextInterface | WrapInterface), pos: { bot: number }) {
+        
+        if (prevTask.dependOn && prevTask.dependOn.id) {
+            // console.log(0, prevTask.id, taskInfo.waitQueue.length)
+            taskInfo.runWaitLength ++
+            // console.log(taskInfo.runWaitLength)
+        }
+        
         let hasDepended = false
         taskInfo.waitQueue.forEach((task: (ImgInterface | RectInterface | TextInterface | WrapInterface)) => {
             if (task.dependOn && prevTask.id == task.dependOn.id) {
@@ -303,6 +310,8 @@ export default class Summer {
             }
         })
         if (!hasDepended) {
+            // console.log(taskInfo.id, prevTask.id, taskInfo.runQueue.length, taskInfo.runLength + 1)
+            // console.log(taskInfo.id, prevTask.id, taskInfo.waitQueue.length, taskInfo.runWaitLength)
             if (taskInfo.runQueue.length > taskInfo.runLength + 1) {
                 taskInfo.runLength ++
                 this.runTask(taskInfo, taskInfo.runQueue[taskInfo.runLength])
@@ -377,6 +386,7 @@ export default class Summer {
             case 'wrap':
                 this.drawWrap(_task)
                 .then((wrap_pos) => {
+                    // console.log("---===", _task.id)
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: wrap_pos.bot + lastTaskMargin,
@@ -403,12 +413,19 @@ export default class Summer {
             width = 200,
             height = 0,
             isGetHeight = false,
+            hidden = false,
             radius = 0,
             mode = 'cover',
             backgroundColor,
             border,
             shadow
         } = info
+
+        if (hidden) {
+            return {
+                bot: y
+            }
+        }
 
         let imgInfo:ImgInfoInterface
         if (typeof(img) == 'string') {
@@ -505,6 +522,7 @@ export default class Summer {
                 height = 50,
                 radius = 0,
                 isGetHeight = false,
+                hidden = false,
                 border,
                 background = {
                     color: ''
@@ -512,8 +530,15 @@ export default class Summer {
                 shadow
             } = info
 
+            if (hidden) {
+                resolve ({
+                    bot: (info.y || 0)
+                })
+                return
+            }
+
             if (isGetHeight) {
-                resolve({
+                return resolve({
                     bot: y + height
                 })
             }
@@ -604,6 +629,7 @@ export default class Summer {
                     left: 0,
                     bot: 0
                 },
+                hidden = false,
                 maxLine = 0,
                 isGetHeight = false,
                 fontWeight = 'normal',
@@ -617,6 +643,13 @@ export default class Summer {
                 lastLineLeastNum = 0,
                 width = 0
             } = info
+
+            if (hidden) {
+                resolve ({
+                    bot: (info.y || 0)
+                })
+                return
+            }
 
             let ratio = this.ratio
                 x *= ratio
