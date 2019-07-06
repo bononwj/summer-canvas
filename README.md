@@ -118,9 +118,9 @@ tasks | (<a href="#ImgOptions">ImgOptions</a> \| <a href="#RectOptions">RectOpti
 
 option | type | description
 -| - | - |
+id | string
 x? | number
 y? | number
-id | string
 dependOn? | <a href="#DependOnOptions">DependOnOptions</a>
 last? | <a href="#LastTaskOptions">LastTaskOptions</a>
 
