@@ -164,7 +164,7 @@ export default class Summer {
             width: this.canvasWidth
         })
         .then((pos: PosInterface) => {
-            console.log(pos, this.canvasHeight, this.tasks)
+            // console.log(pos, this.canvasHeight, this.tasks)
             if (this.isInit) {
                 this.isInit = false
                 this.canvasHeight = pos.bot

@@ -75,6 +75,7 @@ interface TextInterface extends ItemBaseInterface {
     type: 'text';
     text: string;
     width?: number;
+    height?: number;
     fontSize?: number;
     lineHeight?: number;
     maxLine?: number;
@@ -143,5 +144,9 @@ export default class Summer {
     drawBoardPath(info: BoardPathInterface): void;
     setShadow(shadow: BoxShadowInterface): void;
     getImgInfo(imgUrl: string): Promise<ImgInfoInterface>;
+    getElements(): (ImgInterface | RectInterface | TextInterface | WrapInterface)[];
+    getElementById(id: string): (ImgInterface | RectInterface | TextInterface | WrapInterface);
+    getTask(id: string, tasks: any): (ImgInterface | RectInterface | TextInterface | WrapInterface);
+    addDraw(_task: (ImgInterface | RectInterface | TextInterface | WrapInterface)): Promise<PosInterface>;
 }
 export {};

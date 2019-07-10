@@ -62,7 +62,7 @@ var Summer = /** @class */ (function () {
             width: this.canvasWidth
         })
             .then(function (pos) {
-            // console.log(pos, this.canvasHeight, this.tasks)
+            console.log(pos, _this.canvasHeight, _this.tasks);
             if (_this.isInit) {
                 _this.isInit = false;
                 _this.canvasHeight = pos.bot;
@@ -72,10 +72,14 @@ var Summer = /** @class */ (function () {
                 _this.draw(callback);
             }
             else {
-                callback && callback(_this.canvas.toDataURL("image/png"), {
+                callback && callback(_this.canvas, {
                     width: _this.canvasWidth,
                     height: _this.canvasHeight
                 });
+                // callback && callback(this.canvas.toDataURL("image/png"), {
+                //     width: this.canvasWidth,
+                //     height: this.canvasHeight
+                // })
             }
         });
     };
@@ -593,6 +597,7 @@ var Summer = /** @class */ (function () {
                     summerText.drawText(x + offsetX_1, y + fontSize, color, fontSize, lineHeight);
                 }
             }
+            info.height = textHeight;
             resolve({
                 bot: (info.y || 0) + textHeight
             });
@@ -671,6 +676,43 @@ var Summer = /** @class */ (function () {
                 reject("请传入照片地址");
             }
         });
+    };
+    Summer.prototype.getElements = function () {
+        return this.tasks;
+    };
+    Summer.prototype.getElementById = function (id) {
+        return this.getTask(id, this.tasks);
+    };
+    Summer.prototype.getTask = function (id, tasks) {
+        for (var i = 0; i < tasks.length; i++) {
+            if (id == tasks[i].id) {
+                return tasks[i];
+            }
+            else {
+                if (tasks[i].tasks) {
+                    return this.getTask(id, tasks[i].tasks);
+                }
+            }
+        }
+        return null;
+    };
+    Summer.prototype.addDraw = function (_task) {
+        switch (_task.type) {
+            case 'img':
+                return this.drawImg(_task);
+                return;
+            case 'text':
+                return this.drawText(_task);
+                return;
+            case 'rect':
+                return this.drawRect(_task);
+                return;
+            case 'wrap':
+                return this.drawWrap(_task);
+                return;
+            default:
+                throw "task.type is not defined";
+        }
     };
     return Summer;
 }());
