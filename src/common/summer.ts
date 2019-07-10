@@ -81,6 +81,7 @@ interface TextInterface extends ItemBaseInterface {
     type: 'text'
     text: string
     width?: number
+    height?: number
     fontSize?: number
     lineHeight?: number
     maxLine?: number
@@ -163,7 +164,7 @@ export default class Summer {
             width: this.canvasWidth
         })
         .then((pos: PosInterface) => {
-            // console.log(pos, this.canvasHeight, this.tasks)
+            console.log(pos, this.canvasHeight, this.tasks)
             if (this.isInit) {
                 this.isInit = false
                 this.canvasHeight = pos.bot
@@ -172,10 +173,14 @@ export default class Summer {
                 this.canvas.style.height = this.canvasHeight + 'px'
                 this.draw(callback)
             } else {
-                callback && callback(this.canvas.toDataURL("image/png"), {
+                callback && callback(this.canvas, {
                     width: this.canvasWidth,
                     height: this.canvasHeight
                 })
+                // callback && callback(this.canvas.toDataURL("image/png"), {
+                //     width: this.canvasWidth,
+                //     height: this.canvasHeight
+                // })
             }
         })
     }
@@ -738,6 +743,7 @@ export default class Summer {
                     summerText.drawText(x + offsetX, y + fontSize, color, fontSize, lineHeight)
                 }
             }
+            info.height = textHeight
             resolve ({
                 bot: (info.y || 0) + textHeight
             })
@@ -822,5 +828,45 @@ export default class Summer {
                 reject("请传入照片地址")
             }
         })
+    }
+
+    getElements() {
+        return this.tasks
+    }
+
+    getElementById(id: string):(ImgInterface | RectInterface | TextInterface | WrapInterface) {
+        return this.getTask(id, this.tasks)
+    }
+
+    getTask(id: string, tasks):(ImgInterface | RectInterface | TextInterface | WrapInterface) {
+        for (let i = 0; i < tasks.length; i++) {
+            if (id == tasks[i].id) {
+                return tasks[i]
+            } else {
+                if (tasks[i].tasks) {
+                    return this.getTask(id, tasks[i].tasks)
+                }
+            }
+        }
+        return null
+    }
+
+    addDraw(_task: (ImgInterface | RectInterface | TextInterface | WrapInterface)):Promise<PosInterface> {
+        switch (_task.type) {
+            case 'img':
+                return this.drawImg(_task)
+                return
+            case 'text':
+                return this.drawText(_task)
+                return
+            case 'rect':
+                return this.drawRect(_task)
+                return
+            case 'wrap':
+                return this.drawWrap(_task)
+                return
+            default:
+                throw `task.type is not defined`
+        }
     }
 }

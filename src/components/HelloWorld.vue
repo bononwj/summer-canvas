@@ -28,11 +28,33 @@ export default class HelloWorld extends Vue {
 		// let text = `一二三四五六七八九`
 		// let text = `一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十`
 
-		let canvas = new Summer(this.getHomeShare())
+		let shareCanvas = new Summer(this.getHomeShare())
 		this.text = '加载中'
-		canvas.draw((img: string, size: { width: string, height: string }) => {
-			this.img = img
-			this.text = '加载完成'
+		shareCanvas.draw((canvas: HTMLCanvasElement, size: { width: string, height: string }) => {
+			
+			// let tasks = shareCanvas.getElements()
+			let theme_text_task = shareCanvas.getElementById('theme_text')
+			let subtitle_text_task = shareCanvas.getElementById('subtitle_text')
+
+			let left_line_rect_height = theme_text_task.height == 'auto' ? 0 : theme_text_task.height
+			if (!subtitle_text_task.hidden) {
+				left_line_rect_height = (subtitle_text_task.y + (subtitle_text_task.height == 'auto' ? 0 : subtitle_text_task.height)) - theme_text_task.y
+			}
+
+			shareCanvas.addDraw({
+				type: 'rect',
+				id: 'left_line_rect',
+				x: 0,
+				y: theme_text_task.y,
+				width: 4,
+				height: left_line_rect_height,
+				background: {
+					color: 'linear(to s, 0 #fff7be, 100% #f9b71c)'
+				}
+			}).then(() => {
+				this.img = canvas.toDataURL("image/png")
+				this.text = '加载完成'
+			})
 			// console.log('saa: ', size)
 		})
 	}
@@ -62,7 +84,7 @@ export default class HelloWorld extends Vue {
 					id: 'main_wrap',
 					x: 0,
 					y: 0,
-					hidden: true,
+					// hidden: true,
 					width: 317,
 					dependOn: {
 						id: 'banner_img',

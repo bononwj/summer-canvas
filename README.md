@@ -13,7 +13,7 @@
 
     import Summer from 'summer-canvas'
 
-    const canvas = new Summer({
+    const shareCanvas = new Summer({
         ratio: 1,
         canvasId: 'canvas',
         canvasWidth: 343,
@@ -35,14 +35,15 @@
         ]
     })
 
-    canvas.draw((img: string, size: { width: string, height: string }) => {
+    shareCanvas.draw((img: string, size: { width: string, height: string }) => {
 
     })
 
 ### method
 
 1. new Summer(<a href="#SummerOptions">SummerOptions</a>)
-2. canvas.draw(doneCallback)
+2. draw(doneCallback)
+3. addDraw(<a href="#ImgOptions">ElementOptions</a>)
 
 ### options
 
