@@ -18,8 +18,11 @@ export default class HelloWorld extends Vue {
 	img: string = ''
 	
 	handleStartDraw() {
+		// this.singleImg()
+		// this.shareImg()
 	}
-	mounted() {
+	
+	shareImg() {
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjkyOTk5MDA2
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA3MDg1
