@@ -62,7 +62,7 @@ var Summer = /** @class */ (function () {
             width: this.canvasWidth
         })
             .then(function (pos) {
-            console.log(pos, _this.canvasHeight, _this.tasks);
+            // console.log(pos, this.canvasHeight, this.tasks)
             if (_this.isInit) {
                 _this.isInit = false;
                 _this.canvasHeight = pos.bot;
@@ -430,6 +430,11 @@ var Summer = /** @class */ (function () {
             height *= ratio;
             radius *= ratio;
             var ctx = _this.ctx;
+            if (radius) {
+                _this.drawBoardPath({ x: x, y: y, width: width, height: height, radius: radius });
+                ctx.closePath();
+                ctx.clip();
+            }
             if (shadow) {
                 _this.drawBoxShadow(shadow, { x: x, y: y, width: width, height: height, radius: radius });
             }
