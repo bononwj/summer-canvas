@@ -21,6 +21,10 @@ export default class HelloWorld extends Vue {
 		// this.singleImg()
 		// this.shareImg()
 	}
+
+	mounted() {
+		this.shareImg()
+	}
 	
 	shareImg() {
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjkyOTk5MDA2
@@ -69,6 +73,7 @@ export default class HelloWorld extends Vue {
 			canvasWidth: 317,
 			canvasHeight: 'auto',
 			// canvasHeight: 317,
+			radius: 10,
 			background: {
 				color: '#363F66'
 			},
