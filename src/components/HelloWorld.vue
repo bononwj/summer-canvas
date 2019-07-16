@@ -35,7 +35,8 @@ export default class HelloWorld extends Vue {
 		// let text = `一二三四五六七八九`
 		// let text = `一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十`
 
-		let shareCanvas = new Summer(this.getHomeShare())
+		// let shareCanvas = new Summer(this.getHomeShare())
+		let shareCanvas = new Summer(this.getStarShare())
 		this.text = '加载中'
 		shareCanvas.draw((canvas: HTMLCanvasElement, size: { width: string, height: string }) => {
 			
@@ -273,13 +274,13 @@ export default class HelloWorld extends Vue {
 		}
 	}
 
-	getStarShare() {
+	getStarShare():any {
 		return {
 			ratio: 3,
 			canvasId: 'canvas_m',
 			canvasWidth: 343,
-			// canvasHeight: 'auto',
-			canvasHeight: 343,
+			canvasHeight: 'auto',
+			// canvasHeight: 343,
 			radius: 30,
 			// canvasHeight: 200,
 			// backgroundColor: 'red',

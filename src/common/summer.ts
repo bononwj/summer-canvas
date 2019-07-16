@@ -561,6 +561,7 @@ export default class Summer {
                 this.drawBoardPath({ x, y, width, height, radius })
                 ctx.closePath();
                 ctx.clip();
+                ctx.restore();
             }
             if (shadow) {
                 this.drawBoxShadow(shadow, { x, y, width, height, radius })

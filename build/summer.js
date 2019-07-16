@@ -434,6 +434,7 @@ var Summer = /** @class */ (function () {
                 _this.drawBoardPath({ x: x, y: y, width: width, height: height, radius: radius });
                 ctx.closePath();
                 ctx.clip();
+                ctx.restore();
             }
             if (shadow) {
                 _this.drawBoxShadow(shadow, { x: x, y: y, width: width, height: height, radius: radius });
