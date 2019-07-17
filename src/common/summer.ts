@@ -218,7 +218,7 @@ export default class Summer {
                         }
                     }
                 }
-                taskInfo.tasks = info.tasks
+                taskInfo.tasks = info.tasks || []
                 let hasLast = [] // 判断last是否是唯一的
                 taskInfo.tasks.forEach((task:(ImgInterface | RectInterface | TextInterface | WrapInterface)) => {
                     if (task.last) {
@@ -348,6 +348,7 @@ export default class Summer {
             case 'img':
                 this.drawImg(_task)
                 .then((img_pos) => {
+                    this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: img_pos.bot + lastTaskMargin,
@@ -360,6 +361,7 @@ export default class Summer {
             case 'text':
                 this.drawText(_task)
                 .then((text_pos) => {
+                    this.ctx.restore();
                     if (taskIsLast) {
                         // console.log(text_pos, _task.id)
                         taskInfo.setWrapHeight({
@@ -373,6 +375,7 @@ export default class Summer {
             case 'rect':
                 this.drawRect(_task)
                 .then((rect_pos) => {
+                    this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: rect_pos.bot + lastTaskMargin,
@@ -385,6 +388,7 @@ export default class Summer {
             case 'wrap':
                 this.drawWrap(_task)
                 .then((wrap_pos) => {
+                    this.ctx.restore();
                     // console.log("---===", _task.id)
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
@@ -500,8 +504,6 @@ export default class Summer {
             ctx.drawImage(imgInfo.img, ix, iy, iw, ih, x, y, width, height);
         }
 
-        ctx.restore();
-
         if (border) {
             this.drawBoxBorder(border, { x, y, width, height, radius })
         }
@@ -553,7 +555,6 @@ export default class Summer {
                 this.drawBoardPath({ x, y, width, height, radius })
                 ctx.closePath();
                 ctx.clip();
-                ctx.restore();
             }
             if (shadow) {
                 this.drawBoxShadow(shadow, { x, y, width, height, radius })
