@@ -1,8 +1,10 @@
 <template>
 	<div class="hello">
 		<div class="text" @click="handleStartDraw">{{text}}</div>
+		<canvas id="canvas"></canvas>
 		<canvas id="canvas_m"></canvas>
 		<img v-if="img" :src="img" alt="" class="img">
+		<img v-if="img_m" :src="img_m" alt="" class="img_m">
 		<!-- <img src="../assets/1.png" alt="" class="img"> -->
 	</div>
 </template>
@@ -16,6 +18,7 @@ export default class HelloWorld extends Vue {
 	
 	text: string = '开始'
 	img: string = ''
+	img_m: string = ''
 	
 	handleStartDraw() {
 		// this.singleImg()
@@ -23,10 +26,11 @@ export default class HelloWorld extends Vue {
 	}
 
 	mounted() {
-		this.shareImg()
+		this.shareImg1()
+		this.shareImg2()
 	}
 	
-	shareImg() {
+	shareImg1() {
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjkyOTk5MDA2
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA3MDg1
@@ -35,8 +39,7 @@ export default class HelloWorld extends Vue {
 		// let text = `一二三四五六七八九`
 		// let text = `一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十`
 
-		// let shareCanvas = new Summer(this.getHomeShare())
-		let shareCanvas = new Summer(this.getStarShare())
+		let shareCanvas = new Summer(this.getHomeShare())
 		this.text = '加载中'
 		shareCanvas.draw((canvas: HTMLCanvasElement, size: { width: string, height: string }) => {
 			
@@ -66,17 +69,26 @@ export default class HelloWorld extends Vue {
 			// console.log('saa: ', size)
 		})
 	}
+	shareImg2() {
+		let shareCanvas = new Summer(this.getStarShare())
+		// let shareCanvas = new Summer(this.getRadiusShare())
+		this.text = '加载中'
+		shareCanvas.draw((canvas: HTMLCanvasElement, size: { width: string, height: string }) => {
+			this.img_m = canvas.toDataURL("image/png")
+			this.text = '加载完成'
+		})
+	}
 
-	getHomeShare():any {
+	getRadiusShare():any {
 		return {
 			ratio: 2,
 			canvasId: 'canvas_m',
 			canvasWidth: 317,
-			canvasHeight: 'auto',
-			// canvasHeight: 317,
-			radius: 10,
+			// canvasHeight: 'auto',
+			canvasHeight: 317,
+			radius: 30,
 			background: {
-				color: '#363F66'
+				color: '#6699FF'
 			},
 			tasks: [
 				{
@@ -85,6 +97,7 @@ export default class HelloWorld extends Vue {
 					img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
 					x: 0,
 					y: 0,
+					radius: 10,
 					// hidden: true,
 					width: 317,
 				},
@@ -93,8 +106,9 @@ export default class HelloWorld extends Vue {
 					id: 'main_wrap',
 					x: 0,
 					y: 0,
-					// hidden: true,
 					width: 317,
+					height: 300,
+					radius: 10,
 					dependOn: {
 						id: 'banner_img',
 						direction: 'vertical',
@@ -110,166 +124,245 @@ export default class HelloWorld extends Vue {
 						{
 							type: 'text',
 							id: 'theme_text',
-							text: '一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
+							text: '一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
 							x: 20,
 							y: 16,
-							width: 277,
+							width: 327,
 							fontSize: 16,
 							lineHeight: 24,
-							maxLine: 2,
+							maxLine: 200,
 							fontWeight: 'bold',
 							color: '#ffffff',
 							textAlign: 'left',
 						},
-						{
-							type: 'text',
-							id: 'subtitle_text',
-							text: 'ss一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
-							x: 20,
-							y: 16,
-							hidden: true,
-							width: 277,
-							fontSize: 12,
-							lineHeight: 18,
-							maxLine: 2,
-							fontWeight: 'bold',
-							color: '#B6BCE2',
-							textAlign: 'left',
-							dependOn: {
-								id: 'theme_text',
-								direction: 'vertical',
-								margin: 8
-							},
-						},
+					]
+				}
+			]
+		}
+	}
+
+	getHomeShare():any {
+		return {
+			ratio: 2,
+			canvasId: 'canvas_m',
+			canvasWidth: 317,
+			// canvasHeight: 'auto',
+			canvasHeight: 317,
+			radius: 30,
+			background: {
+				color: '#363F66'
+			},
+			tasks: [
+				{
+					type: 'wrap',
+					id: 'main_wrap_border',
+					width: 317,
+					// height: 120,
+					height: 'auto',
+					x: 0,
+					y: 0,
+					radius: 20,
+					last: {
+						margin: 2
+					},
+					background: {
+						color: 'linear(to s, 0 #fff7be, 100% #f9b71c)'
+					},
+					tasks: [
 						{
 							type: 'img',
-							id: 'time_img',
+							id: 'banner_img',
 							img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
-							x: 20,
+							x: 0,
 							y: 0,
-							hidden: true,
-							dependOn: {
-								id: 'time_text',
-								direction: 'vertical',
-								margin: -15
-							},
-							width: 10,
-							height: 10
-						},
-						{
-							type: 'img',
-							id: 'place_img',
-							img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5',
-							x: 20,
-							y: 0,
-							dependOn: {
-								id: 'place_text',
-								direction: 'vertical',
-								margin: -15
-							},
-							width: 10,
-							height: 10
-						},
-						{
-							type: 'text',
-							id: 'time_text',
-							text: 'asdfasasdfasdf asdfsf',
-							x: 40,
-							hidden: true,
-							width: 257,
-							fontSize: 12,
-							lineHeight: 18,
-							maxLine: 1,
-							dependOn: {
-								id: 'subtitle_text',
-								direction: 'vertical',
-								margin: 16
-							},
-							color: 'rgb(128,136,180)',
-							textAlign: 'left',
-						},
-						{
-							type: 'text',
-							id: 'place_text',
-							text: '哈哈哈 asdfsfasdfasasdfasdf asdfsfasdfasasdfasdf asdfsfasdfasasdfasdf asdfsf',
-							x: 40,
-							width: 257,
-							fontSize: 12,
-							lineHeight: 18,
-							maxLine: 1,
-							dependOn: {
-								id: 'time_text',
-								direction: 'vertical',
-								margin: 4
-							},
-							color: 'rgb(128,136,180)',
-							textAlign: 'left',
-						},
-						{
-							type: 'rect',
-							id: 'mid_line_rect',
-							x: 20,
-							width: 277,
-							height: 1,
-							dependOn: {
-								id: 'place_text',
-								direction: 'vertical',
-								margin: 18
-							},
-							background: {
-								color: 'rgba(255,255,255,0.13)'
-							}
+							// hidden: true,
+							width: 317,
+							radius: '10 0 0 10'
 						},
 						{
 							type: 'wrap',
-							id: 'qrcode_wrap',
-							x: 95,
-							width: 128,
-							height: 128,
+							id: 'main_wrap',
+							x: 0,
+							y: 0,
+							// hidden: true,
+							width: 317,
 							dependOn: {
-								id: 'mid_line_rect',
+								id: 'banner_img',
 								direction: 'vertical',
-								margin: 18
+								margin: 0
+							},
+							last: {
+								margin: 0
 							},
 							background: {
-								color: 'linear(to s, 0 #00DFFF, 50% #BC2EF9, 100% #FB2A6C)'
+								color: 'linear(to s, 0 #363F66, 100% #161627)'
 							},
 							tasks: [
 								{
-									type: 'img',
-									id: 'qrcode_img',
-									img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
-									x: 4,
-									y: 4,
-									last: {
-										margin: 0
+									type: 'text',
+									id: 'theme_text',
+									text: '一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
+									x: 20,
+									y: 16,
+									width: 277,
+									fontSize: 16,
+									lineHeight: 24,
+									maxLine: 2,
+									fontWeight: 'bold',
+									color: '#ffffff',
+									textAlign: 'left',
+								},
+								{
+									type: 'text',
+									id: 'subtitle_text',
+									text: 'ss一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
+									x: 20,
+									y: 16,
+									hidden: true,
+									width: 277,
+									fontSize: 12,
+									lineHeight: 18,
+									maxLine: 2,
+									fontWeight: 'bold',
+									color: '#B6BCE2',
+									textAlign: 'left',
+									dependOn: {
+										id: 'theme_text',
+										direction: 'vertical',
+										margin: 8
 									},
-									width: 120,
-									height: 120
+								},
+								{
+									type: 'img',
+									id: 'time_img',
+									img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
+									x: 20,
+									y: 0,
+									hidden: true,
+									dependOn: {
+										id: 'time_text',
+										direction: 'vertical',
+										margin: -15
+									},
+									width: 10,
+									height: 10
+								},
+								{
+									type: 'img',
+									id: 'place_img',
+									img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5',
+									x: 20,
+									y: 0,
+									dependOn: {
+										id: 'place_text',
+										direction: 'vertical',
+										margin: -15
+									},
+									width: 10,
+									height: 10
+								},
+								{
+									type: 'text',
+									id: 'time_text',
+									text: 'asdfasasdfasdf asdfsf',
+									x: 40,
+									hidden: true,
+									width: 257,
+									fontSize: 12,
+									lineHeight: 18,
+									maxLine: 1,
+									dependOn: {
+										id: 'subtitle_text',
+										direction: 'vertical',
+										margin: 16
+									},
+									color: 'rgb(128,136,180)',
+									textAlign: 'left',
+								},
+								{
+									type: 'text',
+									id: 'place_text',
+									text: '哈哈哈 asdfsfasdfasasdfasdf asdfsfasdfasasdfasdf asdfsfasdfasasdfasdf asdfsf',
+									x: 40,
+									width: 257,
+									fontSize: 12,
+									lineHeight: 18,
+									maxLine: 1,
+									dependOn: {
+										id: 'time_text',
+										direction: 'vertical',
+										margin: 4
+									},
+									color: 'rgb(128,136,180)',
+									textAlign: 'left',
+								},
+								{
+									type: 'rect',
+									id: 'mid_line_rect',
+									x: 20,
+									width: 277,
+									height: 1,
+									dependOn: {
+										id: 'place_text',
+										direction: 'vertical',
+										margin: 18
+									},
+									background: {
+										color: 'rgba(255,255,255,0.13)'
+									}
+								},
+								{
+									type: 'wrap',
+									id: 'qrcode_wrap',
+									x: 95,
+									width: 128,
+									height: 128,
+									dependOn: {
+										id: 'mid_line_rect',
+										direction: 'vertical',
+										margin: 18
+									},
+									background: {
+										color: 'linear(to s, 0 #00DFFF, 50% #BC2EF9, 100% #FB2A6C)'
+									},
+									tasks: [
+										{
+											type: 'img',
+											id: 'qrcode_img',
+											img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
+											x: 4,
+											y: 4,
+											last: {
+												margin: 0
+											},
+											width: 120,
+											height: 120
+										},
+									]
+								},
+								{
+									type: 'text',
+									id: 'tips_text',
+									text: '「长按识别二维码，观看现场图片直播」',
+									x: 317 / 2,
+									fontSize: 10,
+									lineHeight: 14,
+									maxLine: 1,
+									dependOn: {
+										id: 'qrcode_wrap',
+										direction: 'vertical',
+										margin: 8
+									},
+									last: {
+										margin: 22
+									},
+									color: 'rgb(255,255,255)',
+									textAlign: 'center',
 								},
 							]
 						},
-						{
-							type: 'text',
-							id: 'tips_text',
-							text: '「长按识别二维码，观看现场图片直播」',
-							x: 317 / 2,
-							fontSize: 10,
-							lineHeight: 14,
-							maxLine: 1,
-							dependOn: {
-								id: 'qrcode_wrap',
-								direction: 'vertical',
-								margin: 8
-							},
-							last: {
-								margin: 22
-							},
-							color: 'rgb(255,255,255)',
-							textAlign: 'center',
-						},
 					]
-				},
+				}
 			]
 		}
 	}
@@ -277,11 +370,11 @@ export default class HelloWorld extends Vue {
 	getStarShare():any {
 		return {
 			ratio: 3,
-			canvasId: 'canvas_m',
+			canvasId: 'canvas',
 			canvasWidth: 343,
 			canvasHeight: 'auto',
 			// canvasHeight: 343,
-			radius: 30,
+			radius: 90,
 			// canvasHeight: 200,
 			// backgroundColor: 'red',
 			tasks: [
@@ -494,15 +587,15 @@ export default class HelloWorld extends Vue {
 	font-size: 0;
 }
 .text {
-	font-size: 30px;
+	margin: 0;
+	font-size: 20px;
 	color: #ffffff;
 }
-#canvas {
+#canvas,#canvas_m {
 	width: 160px;
 	height: 200px;
-	background: #ffffff;
 }
-.img {
+.img,.img_m {
 	// background: linear-gradient(to right, 10% #000, 100% #fff);
 	width: 160px;
 	margin-top: 90px;

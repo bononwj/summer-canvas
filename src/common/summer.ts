@@ -24,6 +24,7 @@ interface ItemBaseInterface {
     x?: number
     y?: number
     id: string
+    radius?: number | string
     hidden?: boolean
     isGetHeight?: boolean
     dependOn?: DependOnInterface
@@ -31,7 +32,6 @@ interface ItemBaseInterface {
 }
 interface RectPathInterface extends ItemBaseInterface {
     width?: number
-    radius?: number
     height?: number
 }
 interface BoardPathInterface {
@@ -39,7 +39,7 @@ interface BoardPathInterface {
     y: number
     width: number
     height: number
-    radius: number
+    radius: number| string
 }
 interface PaddingInterface {
     left?: number
@@ -54,7 +54,6 @@ interface SummerInterface {
     ratio?: number
     border?: BorderInterface
     background?: BackgroundInterface
-    radius?: number
     tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
 }
 interface ImgInfoInterface {
@@ -88,7 +87,6 @@ interface TextInterface extends ItemBaseInterface {
     lastLineLeastNum?: number
     color?: string
     background?: BackgroundInterface
-    radius?: number
     border?: BorderInterface
     padding?: PaddingInterface
     fontWeight?: 'normal' | 'lighter' | 'bold' | number
@@ -99,7 +97,6 @@ interface WrapInterface extends ItemBaseInterface {
     width?: number
     height?: number | 'auto'
     background?: BackgroundInterface
-    radius?: number
     padding?: number
     border?: BorderInterface
     tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
@@ -136,7 +133,6 @@ export default class Summer {
     ctx: CanvasRenderingContext2D
     tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
     border: BorderInterface | undefined
-    radius: number | undefined
     background: BackgroundInterface | undefined
 
     constructor(options: SummerInterface) {
@@ -148,7 +144,6 @@ export default class Summer {
         this.canvasHeight = options.canvasHeight
         this.tasks = options.tasks
         this.border = options.border
-        this.radius = options.radius
         this.background = options.background
     }
 
@@ -159,7 +154,6 @@ export default class Summer {
             height: this.canvasHeight,
             tasks: this.tasks,
             border: this.border,
-            radius: this.radius,
             background: this.background,
             width: this.canvasWidth
         })
@@ -455,7 +449,6 @@ export default class Summer {
             y *= c_ratio
             width *= c_ratio
             height *= c_ratio
-            radius *= c_ratio
 
         const ctx = this.ctx
 
@@ -553,7 +546,6 @@ export default class Summer {
                 y *= ratio
                 width *= ratio
                 height *= ratio
-                radius *= ratio
 
             const ctx = this.ctx
 
@@ -739,7 +731,6 @@ export default class Summer {
                         background: background
                     })
                     .then(() => {
-                        ctx.restore()
                         summerText.drawText(x + offsetX, y + fontSize, color, fontSize, lineHeight)
                         resolve ({
                             bot: (info.y || 0) + textHeight
@@ -791,16 +782,33 @@ export default class Summer {
 
     drawBoardPath(info: BoardPathInterface) {
         const ctx = this.ctx
+        const ratio = this.ratio
         let { x, y, width, height, radius } = info
         ctx.save()
-        if (width < 2 * radius) radius = width / 2
-        if (height < 2 * radius) radius = height / 2
+
+        let radius_list:Array<number> = []
+        if (typeof(radius) == 'number') {
+            radius_list = [radius, radius, radius, radius]
+        } else {
+            radius.split(" ").forEach((size: string) => {
+                radius_list.push(Number(size))
+            })
+        }
+        let radiuses:Array<number> = []
+        radius_list.forEach((_radius: number) => {
+            let __radius = _radius * ratio
+            if (width < 2 * __radius) __radius = width / 2
+            if (height < 2 * __radius) __radius = height / 2
+
+            radiuses.push(__radius)
+        })
+
         ctx.beginPath()
-        ctx.moveTo(x + radius, y)
-        ctx.arcTo(x + width, y, x + width, y + height, radius)
-        ctx.arcTo(x + width, y + height, x, y + height, radius)
-        ctx.arcTo(x, y + height, x, y, radius)
-        ctx.arcTo(x, y, x + width, y, radius)
+        ctx.moveTo(x + radiuses[0], y)
+        ctx.arcTo(x + width, y, x + width, y + height, radiuses[0])
+        ctx.arcTo(x + width, y + height, x, y + height, radiuses[1])
+        ctx.arcTo(x, y + height, x, y, radiuses[2])
+        ctx.arcTo(x, y, x + width, y, radiuses[3])
         ctx.closePath()
     }
 

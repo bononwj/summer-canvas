@@ -46,7 +46,6 @@ var Summer = /** @class */ (function () {
         this.canvasHeight = options.canvasHeight;
         this.tasks = options.tasks;
         this.border = options.border;
-        this.radius = options.radius;
         this.background = options.background;
     }
     Summer.prototype.draw = function (callback) {
@@ -57,7 +56,6 @@ var Summer = /** @class */ (function () {
             height: this.canvasHeight,
             tasks: this.tasks,
             border: this.border,
-            radius: this.radius,
             background: this.background,
             width: this.canvasWidth
         })
@@ -347,7 +345,6 @@ var Summer = /** @class */ (function () {
                         y *= c_ratio;
                         width *= c_ratio;
                         height *= c_ratio;
-                        radius *= c_ratio;
                         ctx = this.ctx;
                         if (shadow) {
                             this.drawBoxShadow(shadow, { x: x, y: y, width: width, height: height, radius: radius });
@@ -428,7 +425,6 @@ var Summer = /** @class */ (function () {
             y *= ratio;
             width *= ratio;
             height *= ratio;
-            radius *= ratio;
             var ctx = _this.ctx;
             if (radius) {
                 _this.drawBoardPath({ x: x, y: y, width: width, height: height, radius: radius });
@@ -592,7 +588,6 @@ var Summer = /** @class */ (function () {
                         background: background
                     })
                         .then(function () {
-                        ctx.restore();
                         summerText.drawText(x + offsetX_1, y + fontSize, color, fontSize, lineHeight);
                         resolve({
                             bot: (info.y || 0) + textHeight
@@ -638,18 +633,33 @@ var Summer = /** @class */ (function () {
     };
     Summer.prototype.drawBoardPath = function (info) {
         var ctx = this.ctx;
+        var ratio = this.ratio;
         var x = info.x, y = info.y, width = info.width, height = info.height, radius = info.radius;
         ctx.save();
-        if (width < 2 * radius)
-            radius = width / 2;
-        if (height < 2 * radius)
-            radius = height / 2;
+        var radius_list = [];
+        if (typeof (radius) == 'number') {
+            radius_list = [radius, radius, radius, radius];
+        }
+        else {
+            radius.split(" ").forEach(function (size) {
+                radius_list.push(Number(size));
+            });
+        }
+        var radiuses = [];
+        radius_list.forEach(function (_radius) {
+            var __radius = _radius * ratio;
+            if (width < 2 * __radius)
+                __radius = width / 2;
+            if (height < 2 * __radius)
+                __radius = height / 2;
+            radiuses.push(__radius);
+        });
         ctx.beginPath();
-        ctx.moveTo(x + radius, y);
-        ctx.arcTo(x + width, y, x + width, y + height, radius);
-        ctx.arcTo(x + width, y + height, x, y + height, radius);
-        ctx.arcTo(x, y + height, x, y, radius);
-        ctx.arcTo(x, y, x + width, y, radius);
+        ctx.moveTo(x + radiuses[0], y);
+        ctx.arcTo(x + width, y, x + width, y + height, radiuses[0]);
+        ctx.arcTo(x + width, y + height, x, y + height, radiuses[1]);
+        ctx.arcTo(x, y + height, x, y, radiuses[2]);
+        ctx.arcTo(x, y, x + width, y, radiuses[3]);
         ctx.closePath();
     };
     Summer.prototype.setShadow = function (shadow) {
