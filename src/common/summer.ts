@@ -52,6 +52,7 @@ interface SummerInterface {
     canvasWidth: number
     canvasHeight: number | 'auto'
     ratio?: number
+    radius?: number | string
     border?: BorderInterface
     background?: BackgroundInterface
     tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
@@ -127,6 +128,7 @@ export default class Summer {
 
     isInit: boolean = true
     ratio: number
+    radius: number | string
     canvas: HTMLCanvasElement
     canvasWidth: number
     canvasHeight: (number | 'auto') = 'auto'
@@ -143,6 +145,7 @@ export default class Summer {
         this.canvas.width = options.canvasWidth * this.ratio
         this.canvasHeight = options.canvasHeight
         this.tasks = options.tasks
+        this.radius = options.radius
         this.border = options.border
         this.background = options.background
     }
@@ -153,6 +156,7 @@ export default class Summer {
             type: 'wrap',
             height: this.canvasHeight,
             tasks: this.tasks,
+            radius: this.radius,
             border: this.border,
             background: this.background,
             width: this.canvasWidth
@@ -348,7 +352,6 @@ export default class Summer {
             case 'img':
                 this.drawImg(_task)
                 .then((img_pos) => {
-                    this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: img_pos.bot + lastTaskMargin,
@@ -361,7 +364,6 @@ export default class Summer {
             case 'text':
                 this.drawText(_task)
                 .then((text_pos) => {
-                    this.ctx.restore();
                     if (taskIsLast) {
                         // console.log(text_pos, _task.id)
                         taskInfo.setWrapHeight({
@@ -375,7 +377,6 @@ export default class Summer {
             case 'rect':
                 this.drawRect(_task)
                 .then((rect_pos) => {
-                    this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: rect_pos.bot + lastTaskMargin,
@@ -388,7 +389,6 @@ export default class Summer {
             case 'wrap':
                 this.drawWrap(_task)
                 .then((wrap_pos) => {
-                    this.ctx.restore();
                     // console.log("---===", _task.id)
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
@@ -507,6 +507,7 @@ export default class Summer {
         if (border) {
             this.drawBoxBorder(border, { x, y, width, height, radius })
         }
+        ctx.restore();
 
         return {
             bot: (info.y || 0) + (info.height || 0)
@@ -555,6 +556,7 @@ export default class Summer {
                 this.drawBoardPath({ x, y, width, height, radius })
                 ctx.closePath();
                 ctx.clip();
+                ctx.restore();
             }
             if (shadow) {
                 this.drawBoxShadow(shadow, { x, y, width, height, radius })

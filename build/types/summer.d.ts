@@ -46,6 +46,7 @@ interface SummerInterface {
     canvasWidth: number;
     canvasHeight: number | 'auto';
     ratio?: number;
+    radius?: number | string;
     border?: BorderInterface;
     background?: BackgroundInterface;
     tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[];
@@ -118,6 +119,7 @@ interface TaskInfoInterface extends ItemBaseInterface {
 export default class Summer {
     isInit: boolean;
     ratio: number;
+    radius: number | string;
     canvas: HTMLCanvasElement;
     canvasWidth: number;
     canvasHeight: (number | 'auto');

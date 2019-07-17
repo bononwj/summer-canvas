@@ -45,6 +45,7 @@ var Summer = /** @class */ (function () {
         this.canvas.width = options.canvasWidth * this.ratio;
         this.canvasHeight = options.canvasHeight;
         this.tasks = options.tasks;
+        this.radius = options.radius;
         this.border = options.border;
         this.background = options.background;
     }
@@ -55,6 +56,7 @@ var Summer = /** @class */ (function () {
             type: 'wrap',
             height: this.canvasHeight,
             tasks: this.tasks,
+            radius: this.radius,
             border: this.border,
             background: this.background,
             width: this.canvasWidth
@@ -249,7 +251,6 @@ var Summer = /** @class */ (function () {
             case 'img':
                 this.drawImg(_task)
                     .then(function (img_pos) {
-                    _this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: img_pos.bot + lastTaskMargin,
@@ -263,7 +264,6 @@ var Summer = /** @class */ (function () {
             case 'text':
                 this.drawText(_task)
                     .then(function (text_pos) {
-                    _this.ctx.restore();
                     if (taskIsLast) {
                         // console.log(text_pos, _task.id)
                         taskInfo.setWrapHeight({
@@ -278,7 +278,6 @@ var Summer = /** @class */ (function () {
             case 'rect':
                 this.drawRect(_task)
                     .then(function (rect_pos) {
-                    _this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: rect_pos.bot + lastTaskMargin,
@@ -292,7 +291,6 @@ var Summer = /** @class */ (function () {
             case 'wrap':
                 this.drawWrap(_task)
                     .then(function (wrap_pos) {
-                    _this.ctx.restore();
                     // console.log("---===", _task.id)
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
@@ -399,6 +397,7 @@ var Summer = /** @class */ (function () {
                         if (border) {
                             this.drawBoxBorder(border, { x: x, y: y, width: width, height: height, radius: radius });
                         }
+                        ctx.restore();
                         return [2 /*return*/, {
                                 bot: (info.y || 0) + (info.height || 0)
                             }];
@@ -433,6 +432,7 @@ var Summer = /** @class */ (function () {
                 _this.drawBoardPath({ x: x, y: y, width: width, height: height, radius: radius });
                 ctx.closePath();
                 ctx.clip();
+                ctx.restore();
             }
             if (shadow) {
                 _this.drawBoxShadow(shadow, { x: x, y: y, width: width, height: height, radius: radius });
