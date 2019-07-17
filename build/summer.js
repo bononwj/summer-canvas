@@ -123,7 +123,7 @@ var Summer = /** @class */ (function () {
                         }
                     }
                 };
-                taskInfo.tasks = info.tasks;
+                taskInfo.tasks = info.tasks || [];
                 var hasLast = []; // 判断last是否是唯一的
                 taskInfo.tasks.forEach(function (task) {
                     if (task.last) {
@@ -251,6 +251,7 @@ var Summer = /** @class */ (function () {
             case 'img':
                 this.drawImg(_task)
                     .then(function (img_pos) {
+                    _this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: img_pos.bot + lastTaskMargin,
@@ -264,6 +265,7 @@ var Summer = /** @class */ (function () {
             case 'text':
                 this.drawText(_task)
                     .then(function (text_pos) {
+                    _this.ctx.restore();
                     if (taskIsLast) {
                         // console.log(text_pos, _task.id)
                         taskInfo.setWrapHeight({
@@ -278,6 +280,7 @@ var Summer = /** @class */ (function () {
             case 'rect':
                 this.drawRect(_task)
                     .then(function (rect_pos) {
+                    _this.ctx.restore();
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
                             bot: rect_pos.bot + lastTaskMargin,
@@ -291,6 +294,7 @@ var Summer = /** @class */ (function () {
             case 'wrap':
                 this.drawWrap(_task)
                     .then(function (wrap_pos) {
+                    _this.ctx.restore();
                     // console.log("---===", _task.id)
                     if (taskIsLast) {
                         taskInfo.setWrapHeight({
@@ -395,7 +399,6 @@ var Summer = /** @class */ (function () {
                             }
                             ctx.drawImage(imgInfo.img, ix, iy, iw, ih, x, y, width, height);
                         }
-                        ctx.restore();
                         if (border) {
                             this.drawBoxBorder(border, { x: x, y: y, width: width, height: height, radius: radius });
                         }
@@ -434,7 +437,6 @@ var Summer = /** @class */ (function () {
                 _this.drawBoardPath({ x: x, y: y, width: width, height: height, radius: radius });
                 ctx.closePath();
                 ctx.clip();
-                ctx.restore();
             }
             if (shadow) {
                 _this.drawBoxShadow(shadow, { x: x, y: y, width: width, height: height, radius: radius });
@@ -592,7 +594,6 @@ var Summer = /** @class */ (function () {
                         background: background
                     })
                         .then(function () {
-                        ctx.restore();
                         summerText.drawText(x + offsetX_1, y + fontSize, color, fontSize, lineHeight);
                         resolve({
                             bot: (info.y || 0) + textHeight

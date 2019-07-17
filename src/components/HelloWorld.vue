@@ -1,8 +1,10 @@
 <template>
 	<div class="hello">
 		<div class="text" @click="handleStartDraw">{{text}}</div>
+		<canvas id="canvas"></canvas>
 		<canvas id="canvas_m"></canvas>
 		<img v-if="img" :src="img" alt="" class="img">
+		<img v-if="img_m" :src="img_m" alt="" class="img_m">
 		<!-- <img src="../assets/1.png" alt="" class="img"> -->
 	</div>
 </template>
@@ -16,6 +18,7 @@ export default class HelloWorld extends Vue {
 	
 	text: string = '开始'
 	img: string = ''
+	img_m: string = ''
 	
 	handleStartDraw() {
 		// this.singleImg()
@@ -23,10 +26,11 @@ export default class HelloWorld extends Vue {
 	}
 
 	mounted() {
-		this.shareImg()
+		// this.shareImg1()
+		this.shareImg2()
 	}
 	
-	shareImg() {
+	shareImg1() {
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjkyOTk5MDA2
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA1ODA5
 		// http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyMjMxMTA3MDg1
@@ -35,8 +39,7 @@ export default class HelloWorld extends Vue {
 		// let text = `一二三四五六七八九`
 		// let text = `一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十`
 
-		// let shareCanvas = new Summer(this.getHomeShare())
-		let shareCanvas = new Summer(this.getStarShare())
+		let shareCanvas = new Summer(this.getHomeShare())
 		this.text = '加载中'
 		shareCanvas.draw((canvas: HTMLCanvasElement, size: { width: string, height: string }) => {
 			
@@ -66,15 +69,86 @@ export default class HelloWorld extends Vue {
 			// console.log('saa: ', size)
 		})
 	}
+	shareImg2() {
+		// let shareCanvas = new Summer(this.getStarShare())
+		let shareCanvas = new Summer(this.getRadiusShare())
+		this.text = '加载中'
+		shareCanvas.draw((canvas: HTMLCanvasElement, size: { width: string, height: string }) => {
+			this.img_m = canvas.toDataURL("image/png")
+			this.text = '加载完成'
+		})
+	}
+
+	getRadiusShare():any {
+		return {
+			ratio: 2,
+			canvasId: 'canvas_m',
+			canvasWidth: 317,
+			// canvasHeight: 'auto',
+			canvasHeight: 317,
+			radius: 30,
+			background: {
+				color: '#6699FF'
+			},
+			tasks: [
+				{
+					type: 'img',
+					id: 'banner_img',
+					img: 'http://c360-o2o.c360dn.com/MTg1ODMyNjkxMDcxNTYyNDAyNjE2OTEx',
+					x: 0,
+					y: 0,
+					radius: 10,
+					// hidden: true,
+					width: 317,
+				},
+				{
+					type: 'wrap',
+					id: 'main_wrap',
+					x: 0,
+					y: 0,
+					width: 317,
+					height: 300,
+					radius: 10,
+					dependOn: {
+						id: 'banner_img',
+						direction: 'vertical',
+						margin: 0
+					},
+					last: {
+						margin: 0
+					},
+					background: {
+						color: 'linear(to s, 0 #363F66, 100% #161627)'
+					},
+					tasks: [
+						{
+							type: 'text',
+							id: 'theme_text',
+							text: '一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 asdfsf',
+							x: 20,
+							y: 16,
+							width: 327,
+							fontSize: 16,
+							lineHeight: 24,
+							maxLine: 200,
+							fontWeight: 'bold',
+							color: '#ffffff',
+							textAlign: 'left',
+						},
+					]
+				}
+			]
+		}
+	}
 
 	getHomeShare():any {
 		return {
 			ratio: 2,
 			canvasId: 'canvas_m',
 			canvasWidth: 317,
-			canvasHeight: 'auto',
-			// canvasHeight: 317,
-			radius: 10,
+			// canvasHeight: 'auto',
+			canvasHeight: 317,
+			radius: 30,
 			background: {
 				color: '#363F66'
 			},
@@ -277,11 +351,11 @@ export default class HelloWorld extends Vue {
 	getStarShare():any {
 		return {
 			ratio: 3,
-			canvasId: 'canvas_m',
+			canvasId: 'canvas',
 			canvasWidth: 343,
 			canvasHeight: 'auto',
 			// canvasHeight: 343,
-			radius: 30,
+			radius: 90,
 			// canvasHeight: 200,
 			// backgroundColor: 'red',
 			tasks: [
@@ -494,15 +568,15 @@ export default class HelloWorld extends Vue {
 	font-size: 0;
 }
 .text {
-	font-size: 30px;
+	margin: 0;
+	font-size: 20px;
 	color: #ffffff;
 }
-#canvas {
+#canvas,#canvas_m {
 	width: 160px;
 	height: 200px;
-	background: #ffffff;
 }
-.img {
+.img,.img_m {
 	// background: linear-gradient(to right, 10% #000, 100% #fff);
 	width: 160px;
 	margin-top: 90px;
