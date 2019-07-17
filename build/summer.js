@@ -535,7 +535,6 @@ var Summer = /** @class */ (function () {
             var textWidth = (width || summerText.getTextWidth(fontSize)) / ratio;
             if (!isGetHeight) {
                 var offsetX_1 = 0;
-                ctx.textAlign = textAlign || 'left';
                 switch (textAlign) {
                     case 'left':
                         offsetX_1 = 0;
@@ -590,6 +589,7 @@ var Summer = /** @class */ (function () {
                         background: background
                     })
                         .then(function () {
+                        ctx.textAlign = textAlign || 'left';
                         summerText.drawText(x + offsetX_1, y + fontSize, color, fontSize, lineHeight);
                         resolve({
                             bot: (info.y || 0) + textHeight
@@ -597,6 +597,7 @@ var Summer = /** @class */ (function () {
                     });
                 }
                 else {
+                    ctx.textAlign = textAlign || 'left';
                     summerText.drawText(x + offsetX_1, y + fontSize, color, fontSize, lineHeight);
                 }
             }

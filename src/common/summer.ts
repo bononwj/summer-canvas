@@ -678,7 +678,6 @@ export default class Summer {
             let textWidth = (width || summerText.getTextWidth(fontSize)) / ratio
             if (!isGetHeight) {
                 let offsetX = 0
-                ctx.textAlign = textAlign || 'left'
                 switch (textAlign) {
                     case 'left':
                         offsetX = 0
@@ -734,12 +733,14 @@ export default class Summer {
                         background: background
                     })
                     .then(() => {
+                        ctx.textAlign = textAlign || 'left'
                         summerText.drawText(x + offsetX, y + fontSize, color, fontSize, lineHeight)
                         resolve ({
                             bot: (info.y || 0) + textHeight
                         })
                     })
                 } else {
+                    ctx.textAlign = textAlign || 'left'
                     summerText.drawText(x + offsetX, y + fontSize, color, fontSize, lineHeight)
                 }
             }
