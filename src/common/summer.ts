@@ -1,4 +1,5 @@
-import SummerText from './summerText';
+import SummerText from './SummerText';
+
 interface PosInterface {
     bot: number
     // top: number
@@ -55,7 +56,7 @@ interface SummerInterface {
     radius?: number | string
     border?: BorderInterface
     background?: BackgroundInterface
-    tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
+    tasks: ElementInterface[]
 }
 interface ImgInfoInterface {
     img: HTMLImageElement
@@ -100,7 +101,7 @@ interface WrapInterface extends ItemBaseInterface {
     background?: BackgroundInterface
     padding?: number
     border?: BorderInterface
-    tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
+    tasks: ElementInterface[]
 }
 interface BoxShadowInterface {
     color?: string
@@ -115,14 +116,16 @@ interface BorderInterface {
 
 interface TaskInfoInterface extends ItemBaseInterface {
     height?: number | 'auto'
-    tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
+    tasks: ElementInterface[]
     runLength: number
     runWaitLength: number
-    waitQueue: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
-    runQueue: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
+    waitQueue: ElementInterface[]
+    runQueue: ElementInterface[]
     done: Function
     setWrapHeight: Function
 }
+
+type ElementInterface = ImgInterface | RectInterface | TextInterface | WrapInterface
 
 export default class Summer {
 
@@ -133,7 +136,7 @@ export default class Summer {
     canvasWidth: number
     canvasHeight: (number | 'auto') = 'auto'
     ctx: CanvasRenderingContext2D
-    tasks: (ImgInterface | RectInterface | TextInterface | WrapInterface)[]
+    tasks: ElementInterface[]
     border: BorderInterface | undefined
     background: BackgroundInterface | undefined
 
@@ -223,16 +226,14 @@ export default class Summer {
                     }
                 }
                 taskInfo.tasks = info.tasks || []
-                let hasLast = [] // 判断last是否是唯一的
-                taskInfo.tasks.forEach((task:(ImgInterface | RectInterface | TextInterface | WrapInterface)) => {
+                let hasLast:string[] = [] // 判断last是否是唯一的
+                taskInfo.tasks.forEach((task:ElementInterface) => {
                     if (task.last) {
-                        hasLast.push({
-                            id: task.id
-                        })
+                        hasLast.push(task.id)
                     }
                     if (task.dependOn) {
                         let hasDepended = false
-                        taskInfo.tasks.forEach((_task:(ImgInterface | RectInterface | TextInterface | WrapInterface)) => {
+                        taskInfo.tasks.forEach((_task:ElementInterface) => {
                             if (task.dependOn && _task.id == task.dependOn.id) {
                                 hasDepended = true
                             }
@@ -246,7 +247,7 @@ export default class Summer {
                         taskInfo.runQueue.push(task)
                     }
                 })
-                if (hasLast.length > 1 || (hasLast.length && hasLast[0].id != taskInfo.tasks[taskInfo.tasks.length-1].id)) {
+                if (hasLast.length > 1 || (hasLast.length && hasLast[0] != taskInfo.tasks[taskInfo.tasks.length-1].id)) {
                     throw `task：${taskInfo.id}\ntask 队列中只能是最后一个 task 有 last 属性`;
                 }
                 if (taskInfo.runQueue.length) {
@@ -292,7 +293,7 @@ export default class Summer {
         })
     }
 
-    checkWaitQueue(taskInfo:TaskInfoInterface, prevTask: (ImgInterface | RectInterface | TextInterface | WrapInterface), pos: { bot: number }) {
+    checkWaitQueue(taskInfo:TaskInfoInterface, prevTask: ElementInterface, pos: { bot: number }) {
         
         if (prevTask.dependOn && prevTask.dependOn.id) {
             // console.log(0, prevTask.id, taskInfo.waitQueue.length)
@@ -301,10 +302,10 @@ export default class Summer {
         }
         
         let hasDepended = false
-        taskInfo.waitQueue.forEach((task: (ImgInterface | RectInterface | TextInterface | WrapInterface)) => {
+        taskInfo.waitQueue.forEach((task: ElementInterface) => {
             if (task.dependOn && prevTask.id == task.dependOn.id) {
                 hasDepended = true
-                let _task = Object.assign(task, {
+                let _task:ElementInterface = Object.assign(task, {
                     // x: task.dependOn.direction == 'cross' ? (pos.right + task.dependOn.margin) : task.x,
                     // y: task.dependOn.direction == 'vertical' ? (pos.bot + task.dependOn.margin) : task.y,
                     y: task.dependOn.direction ? (pos.bot + task.dependOn.margin) : task.y,
@@ -324,9 +325,9 @@ export default class Summer {
         }
     }
 
-    runTask(taskInfo:TaskInfoInterface, currentTask: (ImgInterface | RectInterface | TextInterface | WrapInterface)) {
+    runTask(taskInfo:TaskInfoInterface, currentTask: ElementInterface) {
 
-        let _task = Object.assign(currentTask,
+        let _task:ElementInterface = Object.assign(currentTask,
             {
                 isGetHeight: this.isInit
                 // isGetHeight: (taskInfo.height == 'auto' || taskInfo.height == undefined)
@@ -852,37 +853,35 @@ export default class Summer {
         return this.tasks
     }
 
-    getElementById(id: string):(ImgInterface | RectInterface | TextInterface | WrapInterface) {
+    getElementById(id: string):ElementInterface {
         return this.getTask(id, this.tasks)
     }
 
-    getTask(id: string, tasks):(ImgInterface | RectInterface | TextInterface | WrapInterface) {
+    getTask(id: string, tasks: ElementInterface[]):ElementInterface {
         for (let i = 0; i < tasks.length; i++) {
-            if (id == tasks[i].id) {
-                return tasks[i]
-            } else {
-                if (tasks[i].tasks) {
-                    return this.getTask(id, tasks[i].tasks)
+            if (tasks[i]) {
+                if (id == tasks[i].id) {
+                    return tasks[i]
+                } else {
+                    if (tasks[i].tasks) {
+                        return this.getTask(id, tasks[i].tasks)
+                    }
                 }
             }
         }
         return null
     }
 
-    addDraw(_task: (ImgInterface | RectInterface | TextInterface | WrapInterface)):Promise<PosInterface> {
+    addDraw(_task: ElementInterface):Promise<PosInterface> {
         switch (_task.type) {
             case 'img':
                 return this.drawImg(_task)
-                return
             case 'text':
                 return this.drawText(_task)
-                return
             case 'rect':
                 return this.drawRect(_task)
-                return
             case 'wrap':
                 return this.drawWrap(_task)
-                return
             default:
                 throw `task.type is not defined`
         }
